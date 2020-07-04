@@ -26,7 +26,11 @@ typedef NTSTATUS(NTAPI* NtDeviceIoControlFile)(
 int main() {
 	
 	hDriver = CreateFileA("\\\\.\\MyDrivers0_0_1", GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
-	ULONG dw;
+	if (hDriver == INVALID_HANDLE_VALUE) {
+		printf("[!] Unable to get a handle on the device\n");
+		getchar();
+		return -1;
+	}
 
 	LPCWSTR nt = L"ntdll";
 	HMODULE hntdll = GetModuleHandle(nt);
